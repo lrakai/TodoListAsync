@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer.Contract;
+using System.Collections.Concurrent;
 
 namespace InMemoryDataLayer
 {
     /// <summary>
     /// A non-persistent data layer implementation that exists only in memory.
+    /// Not an asynchronous implementation.
     /// </summary>
     /// <typeparam name="T">IIdentifiable item of data.</typeparam>
-    public class InMemoryDataLayer<T> : IDataLayer<T> where T : IIdentifiable, IDateTimeProvider
+    public class InMemoryDataLayer<T> : IDataLayer<T> where T : class, IIdentifiable, IDateTimeProvider
     {
+        private ConcurrentDictionary<Guid, T> m_data = new ConcurrentDictionary<Guid, T>();
+
         /// <summary>
         /// Insert a <typeparamref name="T"/>.
         /// </summary>
@@ -20,7 +24,15 @@ namespace InMemoryDataLayer
         /// <returns>Task to await the insert operation.</returns>
         public Task InsertAsync(T item)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                var addResult = m_data.TryAdd(item.Id, item);
+                if (!addResult)
+                {
+                    var errorMessage = String.Format("{0} with Id {1} already inserted.", typeof(T).FullName, item.Id);
+                    throw new DataLayerAlreadyExistsException(errorMessage);
+                }
+            });
         }
 
         /// <summary>
@@ -30,7 +42,12 @@ namespace InMemoryDataLayer
         /// <returns>Task<T> with Result <typeparamref name="T"/> if found, otherwise null.</returns>
         public Task<T> FindAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                T item;
+                m_data.TryGetValue(id, out item);
+                return item;
+            });
         }
 
         /// <summary>
@@ -39,9 +56,16 @@ namespace InMemoryDataLayer
         /// <param name="skip">Number to skip.</param>
         /// <param name="limit">Maximum number to <typeparamref name="T"/> to include, if available.</param>
         /// <returns>Result containing a collection of <typeparamref name="T"/>.</returns>
-        public Task<IEnumerable<T>> FindAsync(uint skip, uint limit)
+        public Task<IEnumerable<T>> FindAsync(int skip, int limit)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                return m_data
+                    .Values
+                    .OrderByDescending(v => v.DateTime)
+                    .Skip(skip)
+                    .Take(limit);
+            });
         }
 
         /// <summary>
@@ -51,7 +75,17 @@ namespace InMemoryDataLayer
         /// <returns>Result true if found and removed, false if not found.</returns>
         public Task<bool> UpdateAsync(T item)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                T existingItem;
+                var exists = m_data.TryGetValue(item.Id, out existingItem);
+                if (!exists)
+                {
+                    return false;
+                }
+                m_data.TryUpdate(item.Id, item, existingItem);
+                return true;
+            });
         }
 
         /// <summary>
@@ -61,7 +95,11 @@ namespace InMemoryDataLayer
         /// <returns>Result true if found and removed, false if not found.</returns>
         public Task<bool> RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                T item;
+                return m_data.TryRemove(id, out item);
+            });
         }
     }
 }

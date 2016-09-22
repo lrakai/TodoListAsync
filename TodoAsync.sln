@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InMemoryDataLayer", "InMemo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemDataLayer", "FileSystemDataLayer\FileSystemDataLayer.csproj", "{B6CC4180-F352-433E-8813-6AA4C2E0D1EF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A040A049-78DD-4F5E-ACF0-2A683B96DFFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer.Tests", "DataLayer.Tests\DataLayer.Tests.csproj", "{727837E1-C881-4C8E-B5C4-F739B041689A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +36,15 @@ Global
 		{B6CC4180-F352-433E-8813-6AA4C2E0D1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6CC4180-F352-433E-8813-6AA4C2E0D1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6CC4180-F352-433E-8813-6AA4C2E0D1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{727837E1-C881-4C8E-B5C4-F739B041689A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{727837E1-C881-4C8E-B5C4-F739B041689A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{727837E1-C881-4C8E-B5C4-F739B041689A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{727837E1-C881-4C8E-B5C4-F739B041689A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{727837E1-C881-4C8E-B5C4-F739B041689A} = {A040A049-78DD-4F5E-ACF0-2A683B96DFFF}
 	EndGlobalSection
 EndGlobal

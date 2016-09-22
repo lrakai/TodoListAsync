@@ -10,7 +10,7 @@ namespace DataLayer.Contract
     /// A simple CRUD-like interface.
     /// </summary>
     /// <typeparam name="T">Identifiable data item that provides a DateTime.</typeparam>
-    public interface IDataLayer<T> where T : IIdentifiable, IDateTimeProvider
+    public interface IDataLayer<T> where T : class, IIdentifiable, IDateTimeProvider
     {
         /// <summary>
         /// Insert a <typeparamref name="T"/>.
@@ -32,7 +32,7 @@ namespace DataLayer.Contract
         /// <param name="skip">Number to skip.</param>
         /// <param name="limit">Maximum number to <typeparamref name="T"/> to include, if available.</param>
         /// <returns>Result containing a collection of <typeparamref name="T"/>.</returns>
-        Task<IEnumerable<T>> FindAsync(uint skip, uint limit);
+        Task<IEnumerable<T>> FindAsync(int skip, int limit);
 
         /// <summary>
         /// Update a <typeparamref name="T">.

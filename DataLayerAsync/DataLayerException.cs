@@ -11,5 +11,16 @@ namespace DataLayer.Contract
     /// </summary>
     public class DataLayerAlreadyExistsException : Exception
     {
+        public DataLayerAlreadyExistsException() : base()
+        {
+        }
+
+        public DataLayerAlreadyExistsException(string message) : base(message)
+        {
+        }
+
+        public DataLayerAlreadyExistsException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }
