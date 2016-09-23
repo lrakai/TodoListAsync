@@ -12,7 +12,7 @@ namespace DataLayer.Tests
 
         [TestMethod]
         [ExpectedException(typeof(DataLayerAlreadyExistsException))]
-        public async Task TestInsertSameItemAsync()
+        public async Task InsertSameItemThrowsAsync()
         {
             var item = new Item
             {
@@ -26,7 +26,7 @@ namespace DataLayer.Tests
         }
 
         [TestMethod]
-        public async Task TestFindItemAsync()
+        public async Task FindItemWorksAsync()
         {
             var item = new Item
             {
@@ -43,7 +43,7 @@ namespace DataLayer.Tests
         }
 
         [TestMethod]
-        public async Task TestFindRangeItemAsync()
+        public async Task FindRangeWorksItemAsync()
         {
             var item1 = new Item
             {
@@ -77,7 +77,7 @@ namespace DataLayer.Tests
         }
 
         [TestMethod]
-        public async Task TestUpdateItemAsync()
+        public async Task UpdateItemWorksAsync()
         {
             var itemOriginal = new Item
             {
@@ -101,7 +101,7 @@ namespace DataLayer.Tests
         }
 
         [TestMethod]
-        public async Task TestUpdateNonExistentItemAsync()
+        public async Task UpdateNonExistentReturnsFalseAsync()
         {
             var itemUpdate = new Item
             {
@@ -115,7 +115,7 @@ namespace DataLayer.Tests
         }
 
         [TestMethod]
-        public async Task TestRemoveItemAsync()
+        public async Task RemoveItemWorksAsync()
         {
             var item = new Item
             {
@@ -130,6 +130,14 @@ namespace DataLayer.Tests
             Assert.AreEqual(true, removed);
             var found = await m_data.FindAsync(item.Id);
             Assert.AreEqual(null, found);
+        }
+
+        [TestMethod]
+        public async Task RemoveNonExistentItemReturnsFalseAsync()
+        {
+            var removed = await m_data.RemoveAsync(Guid.Empty);
+
+            Assert.AreEqual(false, removed);
         }
     }
 }

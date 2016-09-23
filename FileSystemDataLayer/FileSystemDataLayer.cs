@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataLayer.Contract;
 using System.IO;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace FileSystemDataLayer
 {
@@ -17,34 +18,35 @@ namespace FileSystemDataLayer
     {
         private static readonly string m_fileExtension = ".json";
         /// <summary>
-        /// Relative path for where to write files.
+        /// Path for where to write files.
         /// </summary>
-        private readonly string m_relativePath = "fdl";
+        private readonly string m_filesPath = "filesData";
         /// <summary>
-        /// Relative path of the file persisting the data.
+        /// Path of the file persisting the data.
         /// </summary>
-        public string RelativePath
+        public string FilesPath
         {
             get
             {
-                return m_relativePath;
+                return m_filesPath;
             }
         }
 
         /// <summary>
-        /// Create a FileSystemDataLayer with default RelativePath for writing files.
+        /// Create a FileSystemDataLayer with default FilesPath for writing files.
         /// </summary>
         public FileSystemDataLayer()
         {
+            Initialize();
         }
 
         /// <summary>
         /// Create a FileSystemDataLayer with the specified <paramref="relativePath"/> for writing files.
         /// </summary>
         /// <param name="relativePath"></param>
-        public FileSystemDataLayer(string relativePath)
+        public FileSystemDataLayer(string path)
         {
-            m_relativePath = relativePath;
+            m_filesPath = path;
             Initialize();
         }
         
@@ -111,7 +113,7 @@ namespace FileSystemDataLayer
         /// <returns>Result containing a collection of <typeparamref name="T"/>.</returns>
         public async Task<IEnumerable<T>> FindAsync(int skip, int limit)
         {
-            var info = new DirectoryInfo(m_relativePath);
+            var info = new DirectoryInfo(m_filesPath);
             //TODO: per-file locking
             var files = info.GetFiles()
                 .OrderByDescending(p => p.CreationTime)
@@ -187,7 +189,7 @@ namespace FileSystemDataLayer
         
         private void Initialize()
         {
-            Directory.CreateDirectory(m_relativePath);
+            Directory.CreateDirectory(m_filesPath);
         }
 
         private string ConstructFileName(T item)
@@ -197,7 +199,7 @@ namespace FileSystemDataLayer
 
         private string ConstructFileName(Guid id)
         { 
-            return Path.Combine(m_relativePath, id + m_fileExtension);
+            return Path.Combine(m_filesPath, id + m_fileExtension);
         }
         
         private async Task<T> ReadFile(Guid id)
