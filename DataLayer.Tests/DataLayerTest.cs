@@ -17,7 +17,7 @@ namespace DataLayer.Tests
             var item = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MinValue
+                DateTime = DateTime.Parse("2016 - 09 - 22 19:20:00Z")
             };
 
             await m_data.InsertAsync(item);
@@ -31,7 +31,7 @@ namespace DataLayer.Tests
             var item = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MinValue
+                DateTime = DateTime.Parse("2016 - 09 - 22 19:20:00Z")
             };
 
             await m_data.InsertAsync(item);
@@ -39,6 +39,7 @@ namespace DataLayer.Tests
             var found = await m_data.FindAsync(item.Id);
 
             Assert.AreEqual(item, found);
+            return;
         }
 
         [TestMethod]
@@ -47,19 +48,19 @@ namespace DataLayer.Tests
             var item1 = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MinValue
+                DateTime = DateTime.Parse("2014 - 09 - 22 19:20:00Z")
             };
 
             var item2 = new Item
             {
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                DateTime = DateTime.MinValue.AddYears(1)
+                DateTime = DateTime.Parse("2015 - 09 - 22 19:20:00Z")
             };
 
             var item3 = new Item
             {
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                DateTime = DateTime.MinValue.AddYears(2)
+                DateTime = DateTime.Parse("2016 - 09 - 22 19:20:00Z")
             };
 
             await m_data.InsertAsync(item1);
@@ -81,13 +82,13 @@ namespace DataLayer.Tests
             var itemOriginal = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MinValue
+                DateTime = DateTime.Parse("2015 - 09 - 22 19:20:00Z")
             };
 
             var itemUpdate = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MaxValue
+                DateTime = DateTime.Parse("2016 - 09 - 22 19:20:00Z")
             };
 
             await m_data.InsertAsync(itemOriginal);
@@ -105,7 +106,7 @@ namespace DataLayer.Tests
             var itemUpdate = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MaxValue
+                DateTime = DateTime.Parse("2016 - 09 - 22 19:20:00Z")
             };
             
             var updated = await m_data.UpdateAsync(itemUpdate);
@@ -119,7 +120,7 @@ namespace DataLayer.Tests
             var item = new Item
             {
                 Id = Guid.Empty,
-                DateTime = DateTime.MinValue
+                DateTime = DateTime.Parse("2016 - 09 - 22 19:20:00Z")
             };
             
             await m_data.InsertAsync(item);

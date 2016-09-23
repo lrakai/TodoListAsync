@@ -29,8 +29,8 @@ namespace InMemoryDataLayer
                 var addResult = m_data.TryAdd(item.Id, item);
                 if (!addResult)
                 {
-                    var errorMessage = String.Format("{0} with Id {1} already inserted.", typeof(T).FullName, item.Id);
-                    throw new DataLayerAlreadyExistsException(errorMessage);
+                    var message = String.Format("{0} with Id {1} already inserted.", typeof(T).FullName, item.Id);
+                    throw new DataLayerAlreadyExistsException(message);
                 }
             });
         }
@@ -51,7 +51,7 @@ namespace InMemoryDataLayer
         }
 
         /// <summary>
-        /// Find a paged range of <typeparamref name="T"/>.
+        /// Find a paged range of <typeparamref name="T"/> ordered with the most recent first.
         /// </summary>
         /// <param name="skip">Number to skip.</param>
         /// <param name="limit">Maximum number to <typeparamref name="T"/> to include, if available.</param>
