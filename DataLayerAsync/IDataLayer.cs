@@ -27,7 +27,7 @@ namespace DataLayer.Contract
         Task<T> FindAsync(Guid id);
 
         /// <summary>
-        /// Find a paged range of <typeparamref name="T"/>.
+        /// Find a paged range of <typeparamref name="T"/> ordered with the most recent first.
         /// </summary>
         /// <param name="skip">Number to skip.</param>
         /// <param name="limit">Maximum number to <typeparamref name="T"/> to include, if available.</param>
